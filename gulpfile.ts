@@ -1,15 +1,15 @@
-const gulp = require('gulp');
-const ts = require('gulp-typescript');
-const clean = require('gulp-clean');
-const runSequence = require('run-sequence');
-const merge = require('merge2');
-const gulpTslint = require("gulp-tslint");
-const tslint = require("tslint");
+import * as gulp from 'gulp';
+import * as ts from 'gulp-typescript';
+import * as clean from 'gulp-clean';
+import * as runSequence from 'run-sequence';
+import * as merge from 'merge2';
+import tslintPlugin from 'gulp-tslint';
+import * as tslint from 'tslint';
 
 gulp.task('build', function() {
     const tsProject = ts.createProject('tsconfig.json');
 
-    var tsResult = tsProject.src()
+    const tsResult = tsProject.src()
         .pipe(tsProject());
 
     return merge([
@@ -18,16 +18,16 @@ gulp.task('build', function() {
     ]);
 });
 
-gulp.task('clean', function () {
+gulp.task('clean', function() {
     return gulp.src('dist', { read: false })
         .pipe(clean());
 });
 
 gulp.task('lint', function() {
-  var program = tslint.Linter.createProgram("./tsconfig.json");
+  const program = tslint.Linter.createProgram('./tsconfig.json');
   return gulp.src(['lib/**', 'spec/**'])
-    .pipe(gulpTslint({ formatter: 'stylish', program }))
-    .pipe(gulpTslint.report());
+    .pipe(tslintPlugin({ formatter: 'stylish', program }))
+    .pipe(tslintPlugin.report());
 });
 
 gulp.task('default', [], function(cb) {

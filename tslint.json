@@ -2,6 +2,7 @@
   "extends": "tslint:all",
   "rules": {
     "comment-format": false,
+    "completed-docs": false,
     "interface-name": false,
     "max-classes-per-file": false,
     "member-access": false,
@@ -18,6 +19,7 @@
       true,
       "single"
     ],
+    "strict-boolean-expressions": false,
     "trailing-comma": false,
     "typedef": false
   }

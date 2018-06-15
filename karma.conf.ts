@@ -19,9 +19,7 @@ module.exports = (config: any) => {
     singleRun: true,
 
     karmaTypescriptConfig: {
-      compilerOptions: {
-        lib: ['ES2015', 'DOM']
-      }
+      tsconfig: './tsconfig.json'
     }
   });
 };

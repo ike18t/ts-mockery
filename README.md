@@ -1,3 +1,3 @@
-# mock_it
+# ts-mockery
 
-Usage Examples: [mock-it.spec.ts](lib/mock-it.spec.ts)
+Usage Examples: [mockery.spec.ts](lib/mockery.spec.ts)

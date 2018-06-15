@@ -4,7 +4,7 @@ import { SpyHelperFactory } from './spy-helper-factory';
 export type RecursivePartial<T> = Partial<{ [key in keyof T]: RecursivePartial<T[key]> | T[key] }>;
 
 export interface ExtendedWith<T> {
-  with(stubs: RecursivePartial<T> | T): T;
+  with(stubs: Overrides<T>): T;
 }
 
 export type Overrides<T> = RecursivePartial<T> | T;
@@ -29,7 +29,7 @@ export class Mockery {
         if (target[prop]) {
           return target[prop];
         }
-        return target[prop] = this.spyHelper.getSpy(prop); // tslint:disable-line
+        return target[prop] = this.spyHelper.getSpy(prop.toString());
       }
     };
   }

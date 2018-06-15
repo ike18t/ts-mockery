@@ -14,11 +14,14 @@
     "allowSyntheticDefaultImports": true,
     "removeComments": true,
     "experimentalDecorators": true,
-    "types" : ["node", "jasmine"],
+    "types" : ["node", "jasmine", "jest"],
     "strictNullChecks": true
   },
   "include": [
     "index.ts",
     "lib/**/*"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

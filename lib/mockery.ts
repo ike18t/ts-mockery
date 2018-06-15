@@ -25,11 +25,11 @@ export class Mockery {
 
   private static getHandler<T extends object>(): ProxyHandler<T> {
     return {
-      get: (target: any, prop: any) => {
+      get: (target: T, prop: keyof T) => {
         if (target[prop]) {
           return target[prop];
         }
-        return target[prop] = this.spyHelper.getSpy(prop);
+        return target[prop] = this.spyHelper.getSpy(prop); // tslint:disable-line
       }
     };
   }

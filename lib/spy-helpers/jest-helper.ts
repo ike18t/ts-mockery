@@ -11,7 +11,7 @@ export class JestHelper implements SpyHelper {
   }
 
   spyAndCallThrough<T, K extends keyof T>(object: T, key: K) {
-    if (typeof object[key] === 'function') {
+    if (typeof object[key] === 'function') { // tslint:disable-line
       jest.spyOn(object, key);
     }
   }

@@ -8,7 +8,7 @@ export class SpyHelperFactory {
     return new this.frameworks[SpyDetector.detect()]();
   }
 
-  private static frameworks = {
+  private static readonly frameworks = {
     jasmine: JasmineHelper,
     jest: JestHelper
   };

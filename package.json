@@ -14,7 +14,7 @@
     "definition": "definitions/index"
   },
   "scripts": {
-    "lint": "gulp lint",
+    "lint": "tslint -c ./tslint.json -p ./tsconfig.json -t stylish",
     "release": "gulp lint && npm run test && gulp build && standard-version",
     "test:jasmine": "karma start",
     "test:jest": "jest",

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["es6", "dom"],
+    "lib": ["es2015", "es6", "dom"],
     "module": "commonjs",
     "target": "es5",
     "noImplicitAny": true,
@@ -15,13 +15,16 @@
     "removeComments": true,
     "experimentalDecorators": true,
     "types" : ["node", "jasmine", "jest"],
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "skipLibCheck": true
   },
   "include": [
     "index.ts",
     "lib/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "node_modules/@types/jasmine",
+    "node_modules/@types/jest"
   ]
 }

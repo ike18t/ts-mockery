@@ -3,23 +3,15 @@
   "version": "1.0.0-rc1",
   "description": "Yet another typescript mocking library.",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "definitions",
     "dist",
     "LICENSE",
     "README"
   ],
-  "typings": "definitions/index",
-  "typescript": {
-    "definition": "definitions/index"
-  },
   "scripts": {
-    "prebuild": "npm run clean",
-    "build": "tsc",
-    "postbuild": "npm run copy && npm run clean:build:js",
-    "copy": "cp -R dist/. definitions/ ",
-    "clean": "rm -fr ./definitions ./dist",
-    "clean:build:js": "find ./definitions -name \"*.js*\" -type f -delete",
+    "build": "npm run clean && tsc",
+    "clean": "rm -rf dist",
     "lint": "tslint -c ./tslint.json -p ./tsconfig.json -t stylish",
     "release": "npm run lint && npm run test && npm run build && standard-version",
     "test:jasmine": "karma start",

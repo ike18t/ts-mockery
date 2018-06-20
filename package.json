@@ -35,24 +35,22 @@
   },
   "homepage": "https://github.com/ike18t/ts-mockery#readme",
   "devDependencies": {
-    "@types/core-js": "^0.9.43",
-    "@types/jasmine": "^2.5.53",
-    "@types/jest": "^23.1.0",
-    "@types/node": "^8.0.17",
-    "core-js": "^2.5.1",
+    "@types/jasmine": "^2.8.8",
+    "@types/jest": "^23.1.1",
+    "@types/node": "^8.10.20",
     "jasmine-ts": "^0.2.1",
     "jest": "^23.1.0",
     "karma": "^2.0.3",
     "karma-chrome-launcher": "^2.2.0",
-    "karma-jasmine": "^1.1.1",
+    "karma-jasmine": "^1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-typescript": "^3.0.12",
     "standard-version": "^4.4.0",
     "ts-jest": "^22.4.6",
     "ts-node": "^4.1.0",
-    "tslint": "^5.9.1",
-    "typescript": "^2.8.4"
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2"
   },
   "peerDependencies": {
     "typescript": ">= 2.8"

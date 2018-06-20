@@ -1,4 +1,3 @@
-import { SpyHelper } from './spy-helpers/spy-helper';
 import { SpyHelperFactory } from './spy-helper-factory';
 
 export type RecursivePartial<T> =
@@ -14,6 +13,8 @@ export interface ExtendedWith<T> {
 export type Overrides<T> = RecursivePartial<T> | T;
 
 export class Mockery {
+  private static spyHelper = SpyHelperFactory.get();
+
   public static extend<T>(object: T) {
     return this.withGenerator<T>(object);
   }
@@ -21,10 +22,6 @@ export class Mockery {
   public static of<T extends object>(stubs: Overrides<T> = {} as T): T {
     const stubbed = this.extend<T>({} as T).with(stubs);
     return new Proxy(stubbed, this.getHandler<T>());
-  }
-
-  private static get spyHelper(): SpyHelper {
-    return SpyHelperFactory.get();
   }
 
   private static getHandler<T extends object>(): ProxyHandler<T> {

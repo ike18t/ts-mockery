@@ -1,7 +1,11 @@
 import { SpyHelper } from './spy-helpers/spy-helper';
 import { SpyHelperFactory } from './spy-helper-factory';
 
-export type RecursivePartial<T> = Partial<{ [key in keyof T]: RecursivePartial<T[key]> | T[key] }>;
+export type RecursivePartial<T> =
+  Partial<{ [key in keyof T]:
+              T[key] extends Function ? T[key] :
+              T[key] extends Array<any> ? Array<Partial<T[key][number]>>:
+              RecursivePartial<T[key]> | T[key] }>;
 
 export interface ExtendedWith<T> {
   with(stubs: Overrides<T>): T;

@@ -40,7 +40,7 @@ describe('Mockery', () => {
     });
 
     it('works with no arguments', () => {
-      expect(() => Mockery.of<Foo>()).not.toThrow(); /* tslint:disable-line:no-unnecessary-callback-wrapper */
+      expect(() => Mockery.of<Foo>()).not.toThrow(); // tslint:disable-line:no-unnecessary-callback-wrapper
     });
 
     it('auto creates spies', () => {

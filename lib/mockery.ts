@@ -2,8 +2,8 @@ import { SpyHelperFactory } from './spy-helper-factory';
 
 export type RecursivePartial<T> =
   Partial<{ [key in keyof T]:
-              T[key] extends Function ? T[key] :
-              T[key] extends Array<any> ? Array<Partial<T[key][number]>>:
+              T[key] extends Function ? T[key] : // tslint:disable-line:ban-types
+              T[key] extends Array<any> ? Array<Partial<T[key][number]>> :
               RecursivePartial<T[key]> | T[key] }>;
 
 export interface ExtendedWith<T> {
@@ -13,8 +13,6 @@ export interface ExtendedWith<T> {
 export type Overrides<T> = RecursivePartial<T> | T;
 
 export class Mockery {
-  private static spyHelper = SpyHelperFactory.get();
-
   public static extend<T>(object: T) {
     return this.withGenerator<T>(object);
   }
@@ -24,13 +22,15 @@ export class Mockery {
     return new Proxy(stubbed, this.getHandler<T>());
   }
 
+  private static readonly spyHelper = SpyHelperFactory.get();
+
   private static getHandler<T extends object>(): ProxyHandler<T> {
     return {
       get: (target: T, prop: keyof T) => {
         if (target[prop]) {
           return target[prop];
         }
-        return target[prop] = this.spyHelper.getSpy(prop.toString());
+        return target[prop] = this.spyHelper.getSpy(prop.toString()); // tslint:disable-line:no-unsafe-any
       }
     };
   }
@@ -38,12 +38,11 @@ export class Mockery {
   private static withGenerator<T>(object: T): ExtendedWith<T> {
     return {
       with: (stubs: Overrides<T> = {} as T): T => {
-        Object.keys(stubs).forEach((key: keyof Overrides<T>) => {
-          this.spyHelper.spyAndCallThrough(stubs, key);
+        Object.keys(stubs).forEach((key) => {
+          this.spyHelper.spyAndCallThrough(stubs, key as keyof Overrides<T>);
         });
 
-        // tslint:disable-next-line:prefer-object-spread
-        return Object.assign(object, stubs);
+        return Object.assign(object, stubs); // tslint:disable-line:prefer-object-spread
       }
     };
   }

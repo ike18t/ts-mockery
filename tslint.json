@@ -1,6 +1,7 @@
 {
   "extends": "tslint:all",
   "rules": {
+    "array-type": false,
     "comment-format": false,
     "completed-docs": false,
     "interface-name": false,
@@ -20,7 +21,7 @@
     "only-arrow-functions": false,
     "ordered-imports": false,
     "prefer-function-over-method": false,
-    "prefer-method-signature", false,
+    "prefer-method-signature": false,
     "quotemark": [
       true,
       "single"

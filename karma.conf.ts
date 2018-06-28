@@ -7,6 +7,7 @@ module.exports = (config: any) => {
     browsers: ['ChromeHeadless'],
     colors: true,
     files: [
+      'karma-test-shim.ts',
       { pattern: 'lib/**/*.ts' }
     ],
     frameworks: ['jasmine', 'karma-typescript'],
@@ -19,6 +20,7 @@ module.exports = (config: any) => {
     singleRun: true,
 
     karmaTypescriptConfig: {
+      include: [ 'karma-test-shim.ts' ],
       tsconfig: './tsconfig.json'
     }
   });

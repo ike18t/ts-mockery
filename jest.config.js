@@ -6,6 +6,7 @@ module.exports = {
     '^.+\\.ts$': 'ts-jest'
   },
   'testRegex': '(.*\\.spec)\\.ts$',
+  'setupFiles': ['./jest-setup.ts'],
   'moduleFileExtensions': [
     'ts',
     'js',

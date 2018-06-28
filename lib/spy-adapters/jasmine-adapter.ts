@@ -1,6 +1,6 @@
-import { SpyHelper } from './spy-helper';
+import { SpyAdapter } from './spy-adapter';
 
-export class JasmineHelper implements SpyHelper {
+export class JasmineAdapter implements SpyAdapter {
   getSpy(property: string) {
     return jasmine.createSpy(property);
   }

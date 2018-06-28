@@ -1,4 +1,4 @@
-export interface SpyHelper {
+export interface SpyAdapter {
   getSpy(property: string): any; // tslint:disable-line
 
   // tslint:disable-next-line:ban-types

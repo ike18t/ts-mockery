@@ -1,4 +1,5 @@
-import { SpyHelperFactory } from './spy-helper-factory';
+import { SpyAdapterFactory } from './spy-adapter-factory';
+import { SpyAdapter } from './spy-adapters/spy-adapter';
 
 export type RecursivePartial<T> =
   Partial<{ [key in keyof T]:
@@ -13,6 +14,10 @@ export interface ExtendedWith<T> {
 export type Overrides<T> = RecursivePartial<T> | T;
 
 export class Mockery {
+  public static configure(spyAdapter: 'jasmine' | 'jest' | SpyAdapter) {
+    this.spyAdapter = typeof spyAdapter === 'string' ? SpyAdapterFactory.get(spyAdapter) : spyAdapter;
+  }
+
   public static extend<T>(object: T) {
     return this.withGenerator<T>(object);
   }
@@ -22,7 +27,7 @@ export class Mockery {
     return new Proxy(stubbed, this.getHandler<T>());
   }
 
-  private static readonly spyHelper = SpyHelperFactory.get();
+  private static spyAdapter: SpyAdapter = SpyAdapterFactory.get('noop');
 
   private static getHandler<T extends object>(): ProxyHandler<T> {
     return {
@@ -30,7 +35,7 @@ export class Mockery {
         if (target[prop]) {
           return target[prop];
         }
-        return target[prop] = this.spyHelper.getSpy(prop.toString()); // tslint:disable-line:no-unsafe-any
+        return target[prop] = this.spyAdapter.getSpy(prop.toString()); // tslint:disable-line:no-unsafe-any
       }
     };
   }
@@ -39,9 +44,8 @@ export class Mockery {
     return {
       with: (stubs: Overrides<T> = {} as T): T => {
         Object.keys(stubs).forEach((key) => {
-          this.spyHelper.spyAndCallThrough(stubs, key as keyof Overrides<T>);
+          this.spyAdapter.spyAndCallThrough(stubs, key as keyof Overrides<T>);
         });
-
         return Object.assign(object, stubs); // tslint:disable-line:prefer-object-spread
       }
     };

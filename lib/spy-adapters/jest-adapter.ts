@@ -1,6 +1,6 @@
-import { SpyHelper } from './spy-helper';
+import { SpyAdapter } from './spy-adapter';
 
-export class JestHelper implements SpyHelper {
+export class JestAdapter implements SpyAdapter {
   getSpy(property: string) {
     return jest.fn();
   }

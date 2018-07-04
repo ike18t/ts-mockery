@@ -12,6 +12,7 @@ describe('Mockery', () => {
     string = ':-)';
     booleanFunction = () => true;
     functionWithParam = (par: string) => par;
+    objectFunction = (): ObjectToNest => ({ string: 'hi', stringFunction: () => 'hi' });
     stringFunction = (buzz: string): string => buzz.toUpperCase();
     voidFunction = (i: number): void => undefined;
   }
@@ -54,6 +55,12 @@ describe('Mockery', () => {
       const mock = Mockery.of<Foo>({ nestedObject : { stringFunction : () => 'hi' } });
 
       expect(mock.nestedObject.stringFunction()).toEqual('hi');
+    });
+
+    it('mocks partials function return types', () => {
+      const mock = Mockery.of<Foo>({ objectFunction: () => ({ string: 'bah' }) });
+
+      expect(mock.objectFunction().string).toBe('bah');
     });
   });
 
@@ -114,6 +121,12 @@ describe('Mockery', () => {
       Mockery.extend(mock).with({ string: 'third' });
 
       expect(mock.string).toEqual('third');
+    });
+
+    it('mocks partials function return types', () => {
+      const mock = Mockery.extend(Mockery.of<Foo>()).with({ objectFunction: () => ({ string: 'bah' }) });
+
+      expect(mock.objectFunction().string).toBe('bah');
     });
   });
 });

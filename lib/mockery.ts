@@ -1,9 +1,11 @@
 import { SpyAdapterFactory } from './spy-adapter-factory';
 import { SpyAdapter } from './spy-adapters/spy-adapter';
 
+export type ReturnType<T> = T extends (...args: any[]) => infer R ? R : any;
+
 export type RecursivePartial<T> =
   Partial<{ [key in keyof T]:
-              T[key] extends Function ? T[key] : // tslint:disable-line:ban-types
+              T[key] extends Function ? () => Partial<ReturnType<T[key]>> : // tslint:disable-line:ban-types
               T[key] extends Array<any> ? Array<Partial<T[key][number]>> :
               RecursivePartial<T[key]> | T[key] }>;
 

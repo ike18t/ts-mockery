@@ -25,22 +25,10 @@ export class Mockery {
   }
 
   public static of<T extends object>(stubs: Overrides<T> = {} as T): T {
-    const stubbed = this.extend<T>({} as T).with(stubs);
-    return new Proxy(stubbed, this.getHandler<T>());
+    return this.extend<T>({} as T).with(stubs);
   }
 
   private static spyAdapter: SpyAdapter = SpyAdapterFactory.get('noop');
-
-  private static getHandler<T extends object>(): ProxyHandler<T> {
-    return {
-      get: (target: T, prop: keyof T) => {
-        if (target[prop]) {
-          return target[prop];
-        }
-        return target[prop] = this.spyAdapter.getSpy(prop.toString()); // tslint:disable-line:no-unsafe-any
-      }
-    };
-  }
 
   private static withGenerator<T>(object: T): ExtendedWith<T> {
     return {

@@ -44,13 +44,6 @@ describe('Mockery', () => {
       expect(() => Mockery.of<Foo>()).not.toThrow(); // tslint:disable-line:no-unnecessary-callback-wrapper
     });
 
-    it('auto creates spies', () => {
-      const mock = Mockery.of<Foo>();
-      mock.stringFunction('bye');
-
-      expect(mock.stringFunction).toHaveBeenCalledWith('bye');
-    });
-
     it('works with nested types', () => {
       const mock = Mockery.of<Foo>({ nestedObject : { stringFunction : () => 'hi' } });
 
@@ -124,7 +117,7 @@ describe('Mockery', () => {
     });
 
     it('mocks partials function return types', () => {
-      const mock = Mockery.extend(Mockery.of<Foo>()).with({ objectFunction: () => ({ string: 'bah' }) });
+      const mock = Mockery.of<Foo>({ objectFunction: () => ({ string: 'bah' }) });
 
       expect(mock.objectFunction().string).toBe('bah');
     });

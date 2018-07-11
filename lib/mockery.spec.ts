@@ -1,7 +1,12 @@
 import { Mockery } from './mockery';
 
 describe('Mockery', () => {
+  interface AnotherObjectToNest {
+    function: () => boolean;
+  }
+
   interface ObjectToNest {
+    anotherNestedObject: AnotherObjectToNest;
     string: string;
     stringFunction: () => string;
   }
@@ -12,7 +17,11 @@ describe('Mockery', () => {
     string = ':-)';
     booleanFunction = () => true;
     functionWithParam = (par: string) => par;
-    objectFunction = (): ObjectToNest => ({ string: 'hi', stringFunction: () => 'hi' });
+    objectFunction = (): ObjectToNest => ({
+      anotherNestedObject: { function: () => true },
+      string: 'hi',
+      stringFunction: () => 'hi'
+    })
     stringFunction = (buzz: string): string => buzz.toUpperCase();
     voidFunction = (i: number): void => undefined;
   }
@@ -48,6 +57,13 @@ describe('Mockery', () => {
       const mock = Mockery.of<Foo>({ nestedObject : { stringFunction : () => 'hi' } });
 
       expect(mock.nestedObject.stringFunction()).toEqual('hi');
+    });
+
+    it('mocks multiple level nested functions', () => {
+      const mock = Mockery.of<Foo>({ nestedObject : { anotherNestedObject: { function : () => false } } });
+      mock.nestedObject.anotherNestedObject.function();
+
+      expect(mock.nestedObject.anotherNestedObject.function).toHaveBeenCalled();
     });
 
     it('mocks partials function return types', () => {

@@ -30,11 +30,21 @@ export class Mockery {
 
   private static spyAdapter: SpyAdapter = SpyAdapterFactory.get('noop');
 
+  private static spyOnTheStubbedFunctions<T>(object: T, key: keyof T) {
+    if (typeof object[key] === typeof Function) {
+      this.spyAdapter.spyAndCallThrough(object, key as keyof Overrides<T>);
+    } else if (typeof object[key] === typeof {}) {
+      Object.keys(object[key] as any).forEach((subKey) => {
+        this.spyOnTheStubbedFunctions<any>(object[key], subKey);
+      });
+    }
+  }
+
   private static withGenerator<T>(object: T): ExtendedWith<T> {
     return {
       with: (stubs: Overrides<T> = {} as T): T => {
         Object.keys(stubs).forEach((key) => {
-          this.spyAdapter.spyAndCallThrough(stubs, key as keyof Overrides<T>);
+          this.spyOnTheStubbedFunctions(stubs, key as keyof Overrides<T>);
         });
         return Object.assign(object, stubs); // tslint:disable-line:prefer-object-spread
       }

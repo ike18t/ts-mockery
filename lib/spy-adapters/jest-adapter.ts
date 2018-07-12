@@ -1,7 +1,7 @@
 import { SpyAdapter } from './spy-adapter';
 
 export class JestAdapter implements SpyAdapter {
-  getSpy(property: string) {
+  getSpy() {
     return jest.fn();
   }
 

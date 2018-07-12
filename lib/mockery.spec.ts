@@ -12,8 +12,8 @@ describe('Mockery', () => {
   }
 
   class Foo {
-    array: ObjectToNest[];
-    nestedObject: ObjectToNest;
+    array: ObjectToNest[] = [];
+    nestedObject!: ObjectToNest;
     string = ':-)';
     booleanFunction = () => true;
     functionWithParam = (par: string) => par;
@@ -23,7 +23,7 @@ describe('Mockery', () => {
       stringFunction: () => 'hi'
     })
     stringFunction = (buzz: string): string => buzz.toUpperCase();
-    voidFunction = (i: number): void => undefined;
+    voidFunction = (): void => undefined;
   }
 
   describe('of', () => {

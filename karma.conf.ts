@@ -14,14 +14,23 @@ module.exports = (config: any) => {
     logLevel: config.LOG_INFO,
     port: 9876,
     preprocessors: {
-      '**/*.ts': ['karma-typescript']
+      'lib/**/!(*spec).ts': ['coverage'],
+      '**/*.ts': ['karma-typescript'] // tslint:disable-line:object-literal-sort-keys
     },
-    reporters: ['dots', 'karma-typescript', 'kjhtml'],
+    reporters: ['dots', 'karma-typescript', 'kjhtml', 'coverage'],
     singleRun: true,
 
     karmaTypescriptConfig: {
       include: [ 'karma-test-shim.ts' ],
       tsconfig: './tsconfig.json'
+    },
+
+    coverageReporter: {
+      dir: 'coverage',
+      reporters: [
+        { type: 'html', subdir: '.' },
+        { type: 'lcov', subdir: '.' }
+      ]
     }
   });
 };

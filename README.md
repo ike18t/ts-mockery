@@ -1,11 +1,13 @@
-[![Build Status](https://travis-ci.org/ike18t/ts-mockery.png?branch=master)](https://travis-ci.org/ike18t/ts-mockery)
 [![npm version](https://badge.fury.io/js/ts-mockery.svg)](https://badge.fury.io/js/ts-mockery)
+[![Build Status](https://travis-ci.org/ike18t/ts-mockery.png?branch=master)](https://travis-ci.org/ike18t/ts-mockery)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/7a40cfa333b296dee4a2/test_coverage)](https://codeclimate.com/github/ike18t/ts-mockery/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/7a40cfa333b296dee4a2/maintainability)](https://codeclimate.com/github/ike18t/ts-mockery/maintainability)
 
 ## ts-mockery
 
 Mocking library for TypeScript.
 
-## Why use this?	
+## Why use this?
 
 * Usable with either Jasmine or Jest.
 * The primary focus is type-safety.
@@ -70,7 +72,7 @@ Create a test setup file to be included in your Jest or Jasmine config.
 import { Mockery } from './lib/mockery';
 
 // The argument to configure can be either jest, jasmine, noop, or an object that implements the exported SpyAdapater interface
-Mockery.configure('jest'); 
+Mockery.configure('jest');
 ```
 
 The above can be added directly to your karma test shim if you'd like.

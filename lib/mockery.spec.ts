@@ -12,6 +12,9 @@ describe('Mockery', () => {
   }
 
   class Foo {
+    static static(): string {
+      throw new Error();
+    }
     array: ObjectToNest[] = [];
     nestedObject!: ObjectToNest;
     string = ':-)';
@@ -136,6 +139,37 @@ describe('Mockery', () => {
       const mock = Mockery.of<Foo>({ objectFunction: () => ({ string: 'bah' }) });
 
       expect(mock.objectFunction().string).toBe('bah');
+    });
+  });
+
+  describe('static', () => {
+    it('should not call the underlying implememtation', () => {
+      Mockery.static(Foo, 'static', () => 'hi');
+      expect(() => { Foo.static(); }).not.toThrow();
+    });
+
+    it('should call fake', () => {
+      Mockery.static(Foo, 'static', () => 'hi');
+      expect(Foo.static()).toEqual('hi');
+    });
+
+    it('should be a spy', () => {
+      Mockery.static(Foo, 'static', () => 'hi');
+      Foo.static();
+      expect(Foo.static).toHaveBeenCalled();
+    });
+
+    it('should reset the call count', () => {
+      Mockery.static(Foo, 'static', () => 'hi');
+      Foo.static();
+      Mockery.static(Foo, 'static', () => 'hi');
+      expect(Foo.static).not.toHaveBeenCalled();
+    });
+
+    it('should overwrite spy fake', () => {
+      Mockery.static(Foo, 'static', () => 'hi');
+      Mockery.static(Foo, 'static', () => 'hello');
+      expect(Foo.static()).toEqual('hello');
     });
   });
 });

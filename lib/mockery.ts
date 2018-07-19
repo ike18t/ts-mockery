@@ -28,6 +28,11 @@ export class Mockery {
     return this.extend<T>({} as T).with(stubs);
   }
 
+  // tslint:disable-next-line:ban-types
+  public static static<T, K extends keyof T>(object: T, key: K, stub: T[K] & Function): void {
+    this.spyAdapter.spyAndCallFake(object, key, stub);
+  }
+
   private static spyAdapter: SpyAdapter = SpyAdapterFactory.get('noop');
 
   private static spyOnTheStubbedFunctions<T>(object: T, key: keyof T) {

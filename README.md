@@ -5,7 +5,11 @@
 
 ## ts-mockery
 
-Mocking library for TypeScript.
+Simple type-safe mocking library for TypeScript.
+
+[StackBlitz Examples](https://stackblitz.com/edit/ts-mockery-examples?file=tests.ts)
+
+**NOTE:** As of 7/14/18 StackBlitz not up to version 2.8 yet.  What this means is that the tests pass because an appropriate version of typescript is installed under dependencies but the editor is still on an older version of typescript so some of the newer features of typescript is causing awkward feedback in the editor.
 
 ## Why use this?
 
@@ -63,6 +67,18 @@ More usage examples can be found @ [https://stackblitz.com/edit/ts-mockery-examp
 
 **NOTE:** As of 7/14/18 StackBlitz not up to version 2.8 yet.  What this means is that the tests pass because an appropriate version of typescript is installed under dependencies but the editor is still on an older version of typescript so some of the newer features of typescript is causing awkward feedback in the editor.
 
+#### To mock a static function:
+
+```typescript
+import { Mock } from 'ts-mockery';
+
+class ObjectToMock {
+  static staticFunction: () => 'hi';
+}
+
+Mock.static(ObjectToMock, 'staticFunction', () => 'not hi');
+
+```
 
 ## How do I configure this?
 
@@ -79,8 +95,8 @@ The above can be added directly to your karma test shim if you'd like.
 
 To configure in Jest add the mockery configuration into the jest config with the key "setupFiles" like so:
 
-```json
-  'setupFiles': ['./jest-setup.ts'],
+```
+  setupFiles: ['./jest-setup.ts'],
 ```
 
 **It is important that this file is included before tests run.**

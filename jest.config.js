@@ -5,6 +5,7 @@ module.exports = {
   'transform': {
     '^.+\\.ts$': 'ts-jest'
   },
+  'restoreMocks': true,
   'testRegex': '(.*\\.spec)\\.ts$',
   'setupFiles': ['./jest-setup.ts'],
   'moduleFileExtensions': [

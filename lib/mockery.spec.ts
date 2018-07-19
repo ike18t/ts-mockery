@@ -142,34 +142,38 @@ describe('Mockery', () => {
     });
   });
 
-  describe('static', () => {
-    it('should not call the underlying implememtation', () => {
+  describe('staticMethod', () => {
+    it('does not call the underlying implememtation', () => {
       Mockery.staticMethod(Foo, 'static', () => 'hi');
       expect(() => { Foo.static(); }).not.toThrow();
     });
 
-    it('should call fake', () => {
+    it('calls fake', () => {
       Mockery.staticMethod(Foo, 'static', () => 'hi');
       expect(Foo.static()).toEqual('hi');
     });
 
-    it('should be a spy', () => {
+    it('is a spy', () => {
       Mockery.staticMethod(Foo, 'static', () => 'hi');
       Foo.static();
       expect(Foo.static).toHaveBeenCalled(); //tslint:disable-line:no-unbound-method
     });
 
-    it('should reset the call count', () => {
+    it('resets the call count', () => {
       Mockery.staticMethod(Foo, 'static', () => 'hi');
       Foo.static();
       Mockery.staticMethod(Foo, 'static', () => 'hi');
       expect(Foo.static).not.toHaveBeenCalled(); //tslint:disable-line:no-unbound-method
     });
 
-    it('should overwrite spy fake', () => {
+    it('overwrites spy fake', () => {
       Mockery.staticMethod(Foo, 'static', () => 'hi');
       Mockery.staticMethod(Foo, 'static', () => 'hello');
       expect(Foo.static()).toEqual('hello');
+    });
+
+    it('calls the underlying implememtation', () => {
+      expect(() => { Foo.static(); }).toThrow();
     });
   });
 });

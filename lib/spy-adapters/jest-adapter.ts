@@ -8,7 +8,7 @@ export class JestAdapter implements SpyAdapter {
   // tslint:disable-next-line:ban-types
   spyAndCallFake<T, K extends keyof T>(object: T, key: K, stub: T[K] & Function) {
     jest.spyOn(object, key).mockImplementation(stub as any);
-    (object[key] as any).mockClear();
+    (object[key] as any).mockClear(); // tslint:disable-line:no-unsafe-any
   }
 
   spyAndCallThrough<T, K extends keyof T>(object: T, key: K) {

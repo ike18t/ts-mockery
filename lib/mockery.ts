@@ -29,7 +29,7 @@ export class Mockery {
   }
 
   // tslint:disable-next-line:ban-types
-  public static static<T, K extends keyof T>(object: T, key: K, stub: T[K] & Function): void {
+  public static staticMethod<T, K extends keyof T>(object: T, key: K, stub: T[K] & Function): void {
     this.spyAdapter.spyAndCallFake(object, key, stub);
   }
 

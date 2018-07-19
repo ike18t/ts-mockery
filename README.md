@@ -67,16 +67,16 @@ More usage examples can be found @ [https://stackblitz.com/edit/ts-mockery-examp
 
 **NOTE:** As of 7/14/18 StackBlitz not up to version 2.8 yet.  What this means is that the tests pass because an appropriate version of typescript is installed under dependencies but the editor is still on an older version of typescript so some of the newer features of typescript is causing awkward feedback in the editor.
 
-#### To mock a static function:
+#### To mock a static method:
 
 ```typescript
 import { Mock } from 'ts-mockery';
 
 class ObjectToMock {
-  static staticFunction: () => 'hi';
+  static static: () => 'hi';
 }
 
-Mock.static(ObjectToMock, 'staticFunction', () => 'not hi');
+Mock.staticMethod(ObjectToMock, 'static', () => 'not hi');
 
 ```
 

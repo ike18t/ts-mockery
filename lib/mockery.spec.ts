@@ -19,12 +19,15 @@ describe('Mockery', () => {
     nestedObject!: ObjectToNest;
     string = ':-)';
     booleanFunction = () => true;
-    functionWithParam = (par: string) => par;
+    functionWithParam = (param: string) => param;
     objectFunction = (): ObjectToNest => ({
       anotherNestedObject: { function: () => true },
       string: 'hi',
       stringFunction: () => 'hi'
     })
+    async promiseFunction(): Promise<{ [bah: string]: boolean }> {
+      return Promise.resolve({ a: true, b: false });
+    }
     stringFunction = (buzz: string): string => buzz.toUpperCase();
     voidFunction = (): void => undefined;
   }
@@ -39,6 +42,7 @@ describe('Mockery', () => {
     it('mocks multiple methods', () => {
       const mock = Mockery.of<Foo>({ array: [{ stringFunction: () => 'string' }],
                                      booleanFunction: () => false,
+                                     functionWithParam: () => 'hi',
                                      stringFunction: () => 'hi' });
 
       expect(mock.stringFunction('whatevs')).toBe('hi');
@@ -50,6 +54,11 @@ describe('Mockery', () => {
       mock.stringFunction('bye');
 
       expect(mock.stringFunction).toHaveBeenCalledWith('bye');
+    });
+
+    it('mocks a promise function', async () => {
+      const mock = Mockery.of<Foo>({ promiseFunction: async () => Promise.resolve({ c: true, d: false }) });
+      expect(await mock.promiseFunction()).toEqual({ c: true, d: false });
     });
 
     it('works with no arguments', () => {

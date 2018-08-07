@@ -18,6 +18,7 @@ describe('Mockery', () => {
     array: ObjectToNest[] = [];
     nestedObject!: ObjectToNest;
     string = ':-)';
+    anyFunction = (param: string): any => param;
     booleanFunction = () => true;
     functionWithParam = (param: string) => param;
     objectFunction = (): ObjectToNest => ({

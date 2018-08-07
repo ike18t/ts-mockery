@@ -3,7 +3,7 @@ import { SpyAdapter } from './spy-adapters/spy-adapter';
 
 export type RecursivePartial<T> =
   Partial<{ [key in keyof T]:
-              T[key] extends (...a: Array<infer U>) => any ? (...a: Array<U>) => Partial<ReturnType<T[key]>> : // tslint:disable-line
+              T[key] extends (...a: Array<infer U>) => any ? (...a: Array<U>) => Partial<ReturnType<T[key]>> | ReturnType<T[key]>: // tslint:disable-line
               T[key] extends Array<any> ? Array<Partial<T[key][number]>> :
               RecursivePartial<T[key]> | T[key] }>;
 

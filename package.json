@@ -1,6 +1,6 @@
 {
   "name": "ts-mockery",
-  "version": "1.0.0-rc.4",
+  "version": "1.0.0-rc.5",
   "description": "Yet another typescript mocking library.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

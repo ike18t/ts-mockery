@@ -15,6 +15,7 @@ describe('Mockery', () => {
     static static(): string {
       throw new Error();
     }
+    any: any;
     array: ObjectToNest[] = [];
     nestedObject!: ObjectToNest;
     string = ':-)';
@@ -83,6 +84,10 @@ describe('Mockery', () => {
       const mock = Mockery.of<Foo>({ objectFunction: () => ({ string: 'bah' }) });
 
       expect(mock.objectFunction().string).toBe('bah');
+    });
+
+    it('does not blow up when a value is null', () => {
+      expect(() => { Mockery.of<Foo>({ any: null }); }).not.toThrow(); // tslint:disable-line:no-null-keyword
     });
   });
 

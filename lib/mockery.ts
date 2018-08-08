@@ -34,7 +34,8 @@ export class Mockery {
   private static spyOnTheStubbedFunctions<T>(object: T, key: keyof T) {
     if (typeof object[key] === typeof Function) {
       this.spyAdapter.spyAndCallThrough(object, key);
-    } else if (typeof object[key] === typeof {}) {
+    // tslint:disable-next-line:strict-type-predicates
+    } else if (typeof object[key] === typeof {} && object[key] !== null) {
       Object.keys(object[key] as any).forEach((subKey) => {
         this.spyOnTheStubbedFunctions<any>(object[key], subKey);
       });

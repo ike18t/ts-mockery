@@ -89,6 +89,13 @@ describe('Mockery', () => {
     it('does not blow up when a value is null', () => {
       expect(() => { Mockery.of<Foo>({ any: null }); }).not.toThrow(); // tslint:disable-line:no-null-keyword
     });
+
+    it('noops have independent spies', () => {
+      const mock = Mockery.of<Foo>({ nestedObject: { stringFunction: Mockery.noop }, objectFunction: Mockery.noop });
+      mock.objectFunction();
+      expect(mock.objectFunction).toHaveBeenCalled();
+      expect(mock.nestedObject.stringFunction).not.toHaveBeenCalled();
+    });
   });
 
   describe('extend', () => {
@@ -189,6 +196,14 @@ describe('Mockery', () => {
 
     it('calls the underlying implememtation', () => {
       expect(() => { Foo.static(); }).toThrow();
+    });
+  });
+
+  describe('noop', () => {
+    it('returns a spy', () => {
+      const anyFunc = Mockery.noop;
+      anyFunc();
+      expect(anyFunc).toHaveBeenCalled();
     });
   });
 });

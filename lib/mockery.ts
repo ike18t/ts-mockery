@@ -12,6 +12,10 @@ export interface ExtendedWith<T> {
 }
 
 export class Mockery {
+  public static get noop(): () => any {
+    return this.spyAdapter.getSpy('any'); // tslint:disable-line:no-unsafe-any
+  }
+
   public static configure(spyAdapter: 'jasmine' | 'jest' | SpyAdapter) {
     this.spyAdapter = typeof spyAdapter === 'string' ? SpyAdapterFactory.get(spyAdapter) : spyAdapter;
   }

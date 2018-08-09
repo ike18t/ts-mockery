@@ -79,6 +79,23 @@ class ObjectToMock {
 Mock.staticMethod(ObjectToMock, 'static', () => 'not hi');
 
 ```
+#### To mock a function you do not care about:
+
+We got you covered, ```Mock.noop``` will return you a spied on function.
+
+```typescript
+import { Mock } from 'ts-mockery';
+
+class ObjectToMock {
+  doNotCare: () => 'hi';
+}
+
+const mock = Mock.of<ObjectToMock>({ doNotCare: Mock.noop });
+const result = mock.doNotCare();
+
+expect(mock.doNotCare).toHaveBeenCalled();
+expect(result).not.toBe('hi');
+```
 
 ## How do I configure this?
 

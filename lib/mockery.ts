@@ -24,6 +24,10 @@ export class Mockery {
     return this.withGenerator<T>(object);
   }
 
+  public static from<T>(object: RecursivePartial<T>) {
+    return object as T;
+  }
+
   public static of<T extends object>(stubs: RecursivePartial<T> = {} as T): T {
     return this.extend<T>({} as T).with(stubs);
   }

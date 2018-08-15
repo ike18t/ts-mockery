@@ -79,6 +79,37 @@ class ObjectToMock {
 Mock.staticMethod(ObjectToMock, 'static', () => 'not hi');
 
 ```
+
+#### Mock.from:
+We noticed issues when we gave instantiated base class objects to `Mock.of`.  The reason being that the type checker does not look at the prototype.
+
+```typescript
+import { Mock } from 'ts-mockery';
+Mock.of<SomeClass>(new BaseOfSomeClass());
+```
+now with `Mock.from`:
+
+```typescript
+import { Mock } from 'ts-mockery';
+Mock.from<SomeClass>(new BaseOfSomeClass());
+```
+
+Also when setting mocked property to an observable there is a circular reference that would throw an `RangeError {}`
+
+```typescript
+import { Mock } from 'ts-mockery';
+import { of } from 'rxjs';
+Mock.of<SomeClass>({ something$: of(someValue) });
+```
+
+now with `Mock.from`:
+
+```typescript
+import { Mock } from 'ts-mockery';
+import { of } from 'rxjs';
+Mock.from<SomeClass>({ something$: of(someValue) });
+```
+
 #### To mock a function you do not care about:
 
 We got you covered, ```Mock.noop``` will return you a spied on function.
@@ -96,6 +127,8 @@ const result = mock.doNotCare();
 expect(mock.doNotCare).toHaveBeenCalled();
 expect(result).not.toBe('hi');
 ```
+
+
 
 ## How do I configure this?
 

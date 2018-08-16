@@ -53,9 +53,20 @@ export class Mockery {
   private static withGenerator<T>(object: T): ExtendedWith<T> {
     return {
       with: (stubs: RecursivePartial<T> = {} as T): T => {
-        Object.keys(stubs).forEach((key) => {
-          this.spyOnTheStubbedFunctions(stubs, key as keyof RecursivePartial<T>);
-        });
+        let currentKey = '';
+        try {
+          Object.keys(stubs).forEach((key) => {
+            currentKey = key;
+            this.spyOnTheStubbedFunctions(stubs, key as keyof RecursivePartial<T>);
+          });
+        } catch (e) {
+          if (e instanceof RangeError) {
+            throw new Error(
+              `Return value of ${currentKey} has a circular reference.\nConsider using Mock.from instead.`
+            );
+          }
+          throw e;
+        }
         return Object.assign(object, stubs); // tslint:disable-line:prefer-object-spread
       }
     };

@@ -96,6 +96,15 @@ describe('Mockery', () => {
       expect(mock.objectFunction).toHaveBeenCalled();
       expect(mock.nestedObject.stringFunction).not.toHaveBeenCalled();
     });
+
+    it('Throws error when trying to mock circular reference', () => {
+      const myObject: any = {};
+      myObject.foo = myObject; // tslint:disable-line:no-unsafe-any
+
+      const errorMessage = `Return value of foo has a circular reference.\nConsider using Mock.from instead.`;
+
+      expect(() => Mockery.of<any>(myObject)).toThrow(new Error(errorMessage)); // tslint:disable-line:no-unsafe-any
+    });
   });
 
   describe('extend', () => {
@@ -161,6 +170,15 @@ describe('Mockery', () => {
       const mock = Mockery.of<Foo>({ objectFunction: () => ({ string: 'bah' }) });
 
       expect(mock.objectFunction().string).toBe('bah');
+    });
+
+    it('Throws error when trying to extend a mock with circular reference', () => {
+      const myObject: any = {};
+      myObject.foo = myObject; // tslint:disable-line:no-unsafe-any
+      const errorMessage = `Return value of foo has a circular reference.\nConsider using Mock.from instead.`;
+
+      // tslint:disable-next-line:no-unsafe-any
+      expect(() => Mockery.extend<any>({}).with(myObject)).toThrow(new Error(errorMessage));
     });
   });
 

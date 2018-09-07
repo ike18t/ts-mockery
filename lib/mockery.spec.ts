@@ -80,6 +80,23 @@ describe('Mockery', () => {
       expect(mock.nestedObject.anotherNestedObject.function).toHaveBeenCalled();
     });
 
+    it('mocks multiple level nested functions with arrays', () => {
+      const mock = Mockery.of<Foo>({ array : [{ anotherNestedObject: { function : () => false } }] });
+      mock.array[0].anotherNestedObject.function();
+
+      expect(mock.array[0].anotherNestedObject.function).toHaveBeenCalled();
+    });
+
+    it('recursively mocks function return array objects', () => {
+      const obj = {
+        ect: () => ({stuff: [{foo: 1, bar: 'hi'}, {foo: 2, bar: ''}, {foo: 3, bar: ''}]})
+      };
+
+      Mockery.of<typeof obj>({
+        ect: () => ({stuff: [{}]}) // <-- This fails!!
+      });
+    });
+
     it('mocks partials function return types', () => {
       const mock = Mockery.of<Foo>({ objectFunction: () => ({ string: 'bah' }) });
 

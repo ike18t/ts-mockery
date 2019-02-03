@@ -16,6 +16,18 @@ export class Mockery {
     return this.spyAdapter.getSpy('any'); // tslint:disable-line:no-unsafe-any
   }
 
+  public static all<T>() {
+    const handler = {
+      get: (target: T, prop: keyof T) => {
+        if (!target[prop]) {
+          target[prop] = this.spyAdapter.getSpy('any'); // tslint:disable-line:no-unsafe-any
+        }
+        return target[prop];
+      }
+    };
+    return new Proxy({}, handler) as T;
+  }
+
   public static configure(spyAdapter: 'jasmine' | 'jest' | SpyAdapter) {
     this.spyAdapter = typeof spyAdapter === 'string' ? SpyAdapterFactory.get(spyAdapter) : spyAdapter;
   }

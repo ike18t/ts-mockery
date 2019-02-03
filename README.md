@@ -128,6 +128,23 @@ expect(mock.doNotCare).toHaveBeenCalled();
 expect(result).not.toBe('hi');
 ```
 
+#### To mock an object you do not care about:
+
+With Mock.all it will use a proxy to create spies as on demand.
+
+```typescript
+import { Mock } from 'ts-mockery';
+
+class ObjectToMock {
+  doNotCare: () => 'hi';
+}
+
+const mock = Mock.all<ObjectToMock>();
+const result = mock.doNotCare();
+
+expect(mock.doNotCare).toHaveBeenCalled();
+expect(result).not.toBe('hi');
+```
 
 
 ## How do I configure this?
@@ -151,6 +168,6 @@ To configure in Jest add the mockery configuration into the jest config with the
 
 **It is important that this file is included before tests run.**
 
-**Also Important**: 
+**Also Important**:
 
 Jest for whatever reason does not reset mocks between tests by default.  This causes problems with the mocking of static methods.  If you intend to use static method mocking you can add "restoreMocks: true" to your jest config and all will be right in the world.

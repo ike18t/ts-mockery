@@ -241,4 +241,29 @@ describe('Mockery', () => {
       expect(anyFunc).toHaveBeenCalled();
     });
   });
+
+  describe('all', () => {
+    it('returns a spy for uncalled methods', () => {
+      const mock = Mockery.all<Foo>();
+      expect(mock.booleanFunction).not.toHaveBeenCalled();
+    });
+
+    it('returns a spy for called methods', () => {
+      const mock = Mockery.all<Foo>();
+      mock.objectFunction();
+      expect(mock.objectFunction).toHaveBeenCalled();
+    });
+
+    it('returns undefined for called methods', () => {
+      const mock = Mockery.all<Foo>();
+      const result = mock.objectFunction();
+      expect(result).toBeUndefined();
+    });
+
+    it('you can extend an all object', () => {
+      const mock = Mockery.all<Foo>();
+      Mockery.extend(mock).with({ stringFunction: () => 'hola' });
+      expect(mock.stringFunction('whatevs')).toBe('hola');
+    });
+  });
 });

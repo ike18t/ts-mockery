@@ -40,7 +40,13 @@ export class Mockery {
     return object as T;
   }
 
-  public static of<T extends object>(stubs: RecursivePartial<T> = {} as T): T {
+  public static of<T extends Array<any>>(stubs?: Array<RecursivePartial<T[number]>>): T;
+  public static of<T extends ReadonlyArray<any>>(stubs?: ReadonlyArray<RecursivePartial<T[number]>>): T;
+  public static of<T extends object>(stubs?: RecursivePartial<T>): T;
+  public static of<T extends object>(stubs: any = {} as T): T {
+    if (Array.isArray(stubs)) {
+      return stubs as T;
+    }
     return this.extend<T>({} as T).with(stubs);
   }
 

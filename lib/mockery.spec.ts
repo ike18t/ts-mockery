@@ -35,6 +35,13 @@ describe('Mockery', () => {
   }
 
   describe('of', () => {
+    it('works with arrays', () => {
+      const mock = Mockery.of<Array<Foo>>([{ string: 'foo' }, { string: 'bar' }]);
+
+      expect(mock[0].string).toBe('foo');
+      expect(mock[1].string).toBe('bar');
+    });
+
     it('mocks the supplied method', () => {
       const mock = Mockery.of<Foo>({ stringFunction: () => 'hi' });
 

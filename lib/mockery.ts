@@ -47,6 +47,7 @@ export class Mockery {
     if (Array.isArray(stubs)) {
       return stubs as T;
     }
+    // tslint:disable-next-line:no-unsafe-any
     return this.extend<T>({} as T).with(stubs);
   }
 

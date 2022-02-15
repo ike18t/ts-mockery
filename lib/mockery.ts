@@ -19,7 +19,7 @@ export class Mockery {
   public static all<T>() {
     const handler = {
       get: (target: T, prop: keyof T) => {
-        if (!target[prop]) {
+        if (!target[prop] && prop !== 'then') {
           target[prop] = this.spyAdapter.getSpy('any'); // tslint:disable-line:no-unsafe-any
         }
         return target[prop];

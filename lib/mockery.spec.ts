@@ -272,5 +272,19 @@ describe('Mockery', () => {
       Mockery.extend(mock).with({ stringFunction: () => 'hola' });
       expect(mock.stringFunction('whatevs')).toBe('hola');
     });
+
+    if (typeof jest !== 'undefined') {
+      it('works with indexer', async () => {
+        type MapLike = { [key: string]: any };
+
+        const mockedData = Mockery.all<MapLike>();
+        const x = jest.fn();
+        x.mockResolvedValue(mockedData);
+
+        const result = await x();
+
+        expect(result).toBe(mockedData);
+      });
+    }
   });
 });

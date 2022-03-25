@@ -1,4 +1,5 @@
 import { Mockery } from './mockery';
+import { MY_THING, MY_COMPLEX_THING } from './mockery.spec.test-module';
 
 describe('Mockery', () => {
   interface AnotherObjectToNest {
@@ -128,6 +129,36 @@ describe('Mockery', () => {
       const errorMessage = `Return value of foo has a circular reference.\nConsider using Mock.from instead.`;
 
       expect(() => Mockery.of<any>(myObject)).toThrow(new Error(errorMessage)); // tslint:disable-line:no-unsafe-any
+    });
+  });
+
+  describe('resetMockExtensions', () => {
+    it('resets to the original value after the test is complete', () => {
+      Mockery.extend(MY_THING).with({foo: 'fake foo', bar: undefined, baz: 'fake baz'});
+      Mockery.resetMockExtensions();
+
+      expect(MY_THING).toEqual({foo: 'foo', bar: 'bar'});
+    });
+
+    it('resets to the original value after the test is complete', () => {
+      Mockery.extend(MY_THING).with({foo: 'fake foo', bar: undefined, baz: 'fake baz'});
+      Mockery.resetMockExtensions();
+
+      expect(MY_THING).toEqual({foo: 'foo', bar: 'bar'});
+    });
+
+    it('resets complex objects to the original value after the test is complete', () => {
+      Mockery.extend(MY_COMPLEX_THING).with({name: 'fake name'});
+      Mockery.extend(MY_COMPLEX_THING.address).with({street: 'fake street'});
+      Mockery.resetMockExtensions();
+
+      expect(MY_COMPLEX_THING).toEqual({
+        address: {
+          city: 'Foovile',
+          street: '123 Foo St',
+        },
+        name: 'foo',
+      });
     });
   });
 

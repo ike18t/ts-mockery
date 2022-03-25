@@ -11,6 +11,11 @@ export interface ExtendedWith<T> {
   with(stubs: RecursivePartial<T>): T;
 }
 
+interface MockCacheEntry {
+  mockedObject: object;
+  originalObject: object;
+}
+
 export class Mockery {
   public static get noop(): () => any {
     return this.spyAdapter.getSpy('any'); // tslint:disable-line:no-unsafe-any
@@ -51,11 +56,24 @@ export class Mockery {
     return this.extend<T>({} as T).with(stubs);
   }
 
+  public static resetMockExtensions() {
+    Mockery.mockResetCache.reverse().forEach((entry) => {
+      Object.keys(entry.mockedObject).forEach((mockKey) => {
+        if (!(mockKey in entry.originalObject)) {
+          delete (entry.mockedObject as any)[mockKey]; // tslint:disable-line:no-dynamic-delete
+        }
+      });
+      Object.assign(entry.mockedObject, entry.originalObject);
+    });
+    Mockery.mockResetCache = [];
+  }
+
   // tslint:disable-next-line:ban-types
   public static staticMethod<T, K extends keyof T>(object: T, key: K, stub: T[K] & Function): void {
     this.spyAdapter.spyAndCallFake(object, key, stub);
   }
 
+  private static mockResetCache: MockCacheEntry[] = [];
   private static spyAdapter: SpyAdapter = SpyAdapterFactory.get('noop');
 
   private static spyOnTheStubbedFunctions<T>(object: T, key: keyof T) {
@@ -86,8 +104,16 @@ export class Mockery {
           }
           throw e;
         }
+        Mockery.mockResetCache.push({mockedObject: object as any, originalObject: {...(object as any)}});
         return Object.assign(object, stubs); // tslint:disable-line:prefer-object-spread
       }
     };
   }
+}
+
+// tslint:disable-next-line:strict-type-predicates
+if (typeof afterEach !== 'undefined') {
+  afterEach(() => {
+    Mockery.resetMockExtensions();
+  });
 }

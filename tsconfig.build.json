@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "**/*.spec.ts",
+    "jest-setup.ts",
+    "jest.config.ts",
+    "karma-test-shim.ts"
+  ]
+}

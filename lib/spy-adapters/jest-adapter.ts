@@ -1,4 +1,4 @@
-import { SpyAdapter } from './spy-adapter';
+import { SpyAdapter } from "./spy-adapter";
 
 export class JestAdapter implements SpyAdapter {
   getSpy() {
@@ -6,14 +6,18 @@ export class JestAdapter implements SpyAdapter {
   }
 
   // tslint:disable-next-line:ban-types
-  spyAndCallFake<T, K extends keyof T>(object: T, key: K, stub: T[K] & Function) {
-    jest.spyOn(object, key).mockImplementation(stub as any);
-    (object[key] as any).mockClear(); // tslint:disable-line:no-unsafe-any
+  spyAndCallFake<T, K extends keyof T>(
+    object: T,
+    key: K,
+    stub: T[K] & (() => unknown),
+  ) {
+    jest.spyOn(object as any, key as any).mockImplementation(stub); // eslint-disable-line @typescript-eslint/no-explicit-any
+    (object[key] as jest.Mock).mockClear();
   }
 
   spyAndCallThrough<T, K extends keyof T>(object: T, key: K) {
     if (typeof object[key] === typeof Function) {
-      jest.spyOn(object, key);
+      jest.spyOn(object as any, key as any); // eslint-disable-line @typescript-eslint/no-explicit-any
     }
   }
 }

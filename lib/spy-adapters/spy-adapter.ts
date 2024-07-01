@@ -1,8 +1,11 @@
 export interface SpyAdapter {
-  getSpy(property: string): any; // tslint:disable-line
+  getSpy(property: string): any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-  // tslint:disable-next-line:ban-types
-  spyAndCallFake<T, K extends keyof T>(object: T, key: K, stub: T[K] & Function): void;
+  spyAndCallFake<T, K extends keyof T>(
+    object: T,
+    key: K,
+    stub: T[K] & (() => unknown),
+  ): void;
 
   spyAndCallThrough<T, K extends keyof T>(object: T, key: K): void;
 }

@@ -27,6 +27,9 @@
   ],
   "include": [
     "index.ts",
-    "lib/**/*"
+    "lib/**/*",
+    "jest-setup.ts",
+    "jest.config.ts",
+    "karma-test-shim.ts",
   ]
 }

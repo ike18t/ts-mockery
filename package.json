@@ -10,9 +10,9 @@
     "README"
   ],
   "scripts": {
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc -p tsconfig.build.json",
     "clean": "rm -rf dist",
-    "lint": "tslint -c ./tslint.json -p ./tsconfig.json -t stylish",
+    "lint": "eslint .",
     "release": "npm run lint && npm run test && npm run build && standard-version",
     "test:jasmine": "karma start",
     "test:jest": "jest",
@@ -35,30 +35,32 @@
   },
   "homepage": "https://github.com/ike18t/ts-mockery#readme",
   "devDependencies": {
-    "@types/jasmine": "^2.8.8",
-    "@types/jest": "^23.1.1",
-    "@types/node": "^8.10.20",
+    "@eslint/js": "^9.6.0",
+    "@types/jasmine": "^5.1.4",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.12.12",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
     "istanbul": "^0.4.5",
-    "jasmine-ts": "^0.2.1",
-    "jest": "^23.1.0",
-    "karma": "^2.0.3",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-coverage": "^1.1.2",
-    "karma-jasmine": "^1.1.2",
-    "karma-jasmine-html-reporter": "^0.2.2",
-    "karma-sourcemap-loader": "^0.3.7",
-    "karma-typescript": "^3.0.12",
+    "jasmine-ts": "^0.4.0",
+    "karma": "^6.4.3",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-coverage": "^2.2.1",
+    "karma-jasmine": "^5.1.0",
+    "karma-jasmine-html-reporter": "^2.1.0",
+    "karma-sourcemap-loader": "^0.4.0",
+    "karma-typescript": "5.5.4",
+    "prettier": "^3.3.2",
     "standard-version": "^4.4.0",
-    "ts-jest": "^22.4.6",
-    "ts-node": "^4.1.0",
-    "tslint": "^5.10.0",
-    "typescript": "^2.8.4"
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^4.5",
+    "typescript-eslint": "^7.15.0"
   },
   "peerDependencies": {
-    "typescript": ">= 2.8"
+    "typescript": ">= 4.5"
   },
   "directories": {
     "lib": "lib"
-  },
-  "dependencies": {}
+  }
 }

@@ -20,16 +20,14 @@
     "sourceMap": true,
     "strict": true,
     "target": "es5",
-    "types" : ["node", "jasmine", "jest"]
+    "types": ["node", "jasmine", "jest"]
   },
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "include": [
     "index.ts",
     "lib/**/*",
     "jest-setup.ts",
     "jest.config.ts",
-    "karma-test-shim.ts",
+    "karma-test-shim.ts"
   ]
 }

@@ -13,5 +13,4 @@ export class SpyAdapterFactory {
     jest: JestAdapter,
     noop: NoopAdapter
   };
-
 }

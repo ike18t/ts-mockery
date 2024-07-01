@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call */
-import { SpyAdapter } from "./spy-adapter";
+import { SpyAdapter } from './spy-adapter';
 
 export class JasmineAdapter implements SpyAdapter {
   getSpy(property: string) {
@@ -9,7 +9,7 @@ export class JasmineAdapter implements SpyAdapter {
   spyAndCallFake<T, K extends keyof T>(
     object: T,
     key: K,
-    stub: T[K] & (() => unknown),
+    stub: T[K] & (() => unknown)
   ) {
     const value = object[key];
     const spy = (

@@ -4,7 +4,7 @@ export interface SpyAdapter {
   spyAndCallFake<T, K extends keyof T>(
     object: T,
     key: K,
-    stub: T[K] & (() => unknown),
+    stub: T[K] & (() => unknown)
   ): void;
 
   spyAndCallThrough<T, K extends keyof T>(object: T, key: K): void;

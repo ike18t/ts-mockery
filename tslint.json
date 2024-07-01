@@ -22,10 +22,7 @@
     "ordered-imports": false,
     "prefer-function-over-method": false,
     "prefer-method-signature": false,
-    "quotemark": [
-      true,
-      "single"
-    ],
+    "quotemark": [true, "single"],
     "strict-boolean-expressions": false,
     "trailing-comma": false,
     "typedef": false

@@ -4,30 +4,30 @@
 module.exports = (config) => {
   config.set({
     autoWatch: false,
-    browsers: ["ChromeHeadless"],
+    browsers: ['ChromeHeadless'],
     colors: true,
-    files: ["karma-test-shim.ts", { pattern: "lib/**/*.ts" }],
-    frameworks: ["jasmine", "karma-typescript"],
+    files: ['karma-test-shim.ts', { pattern: 'lib/**/*.ts' }],
+    frameworks: ['jasmine', 'karma-typescript'],
     logLevel: config.LOG_INFO,
     port: 9876,
     preprocessors: {
-      "lib/**/!(*spec).ts": ["coverage"],
-      "**/*.ts": ["karma-typescript"], // tslint:disable-line:object-literal-sort-keys
+      'lib/**/!(*spec).ts': ['coverage'],
+      '**/*.ts': ['karma-typescript'] // tslint:disable-line:object-literal-sort-keys
     },
-    reporters: ["dots", "karma-typescript", "kjhtml", "coverage"],
+    reporters: ['dots', 'karma-typescript', 'kjhtml', 'coverage'],
     singleRun: true,
 
     karmaTypescriptConfig: {
-      include: ["karma-test-shim.ts"],
-      tsconfig: "./tsconfig.json",
+      include: ['karma-test-shim.ts'],
+      tsconfig: './tsconfig.json'
     },
 
     coverageReporter: {
-      dir: "coverage",
+      dir: 'coverage',
       reporters: [
-        { type: "html", subdir: "." },
-        { type: "lcov", subdir: "." },
-      ],
-    },
+        { type: 'html', subdir: '.' },
+        { type: 'lcov', subdir: '.' }
+      ]
+    }
   });
 };

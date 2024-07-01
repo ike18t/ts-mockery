@@ -1,5 +1,5 @@
-import { SpyAdapterFactory } from "./spy-adapter-factory";
-import { SpyAdapter } from "./spy-adapters/spy-adapter";
+import { SpyAdapterFactory } from './spy-adapter-factory';
+import { SpyAdapter } from './spy-adapters/spy-adapter';
 
 export type RecursivePartial<T> = Partial<{
   [key in keyof T]: T[key] extends (...a: Array<infer U>) => unknown
@@ -18,25 +18,25 @@ export interface ExtendedWith<T> {
 export class Mockery {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static get noop(): () => any {
-    return this.spyAdapter.getSpy("any");
+    return this.spyAdapter.getSpy('any');
   }
 
   public static all<T extends object>() {
     const handler: ProxyHandler<T> = {
-      // @ts-ignore
+      // @ts-expect-error: prop wants to be a string, but we know it's a keyof T
       get: (target: T, prop: keyof T) => {
-        if (!target[prop] && prop !== "then") {
-          target[prop] = this.spyAdapter.getSpy("any"); // eslint-disable-line @typescript-eslint/no-unsafe-assignment
+        if (!target[prop] && prop !== 'then') {
+          target[prop] = this.spyAdapter.getSpy('any'); // eslint-disable-line @typescript-eslint/no-unsafe-assignment
         }
         return target[prop];
-      },
+      }
     };
     return new Proxy({}, handler) as T;
   }
 
-  public static configure(spyAdapter: "jasmine" | "jest" | SpyAdapter) {
+  public static configure(spyAdapter: 'jasmine' | 'jest' | SpyAdapter) {
     this.spyAdapter =
-      typeof spyAdapter === "string"
+      typeof spyAdapter === 'string'
         ? SpyAdapterFactory.get(spyAdapter)
         : spyAdapter;
   }
@@ -50,10 +50,10 @@ export class Mockery {
   }
 
   public static of<T extends Array<unknown>>(
-    stubs?: Array<RecursivePartial<T[number]>>,
+    stubs?: Array<RecursivePartial<T[number]>>
   ): T;
   public static of<T extends ReadonlyArray<unknown>>(
-    stubs?: ReadonlyArray<RecursivePartial<T[number]>>,
+    stubs?: ReadonlyArray<RecursivePartial<T[number]>>
   ): T;
   public static of<T extends object>(stubs?: RecursivePartial<T>): T;
   public static of<T extends object>(stubs = {} as T): T {
@@ -66,12 +66,12 @@ export class Mockery {
   public static staticMethod<T, K extends keyof T>(
     object: T,
     key: K,
-    stub: T[K] & (() => unknown),
+    stub: T[K] & (() => unknown)
   ): void {
     this.spyAdapter.spyAndCallFake(object, key, stub);
   }
 
-  private static spyAdapter: SpyAdapter = SpyAdapterFactory.get("noop");
+  private static spyAdapter: SpyAdapter = SpyAdapterFactory.get('noop');
 
   private static spyOnTheStubbedFunctions<T>(object: T, key: keyof T) {
     if (typeof object[key] === typeof Function) {
@@ -86,25 +86,25 @@ export class Mockery {
   private static withGenerator<T>(object: T): ExtendedWith<T> {
     return {
       with: (stubs: RecursivePartial<T> = {} as RecursivePartial<T>): T => {
-        let currentKey = "";
+        let currentKey = '';
         try {
           Object.keys(stubs).forEach((key) => {
             currentKey = key;
             this.spyOnTheStubbedFunctions(
               stubs as unknown as T,
-              key as keyof RecursivePartial<T>,
+              key as keyof RecursivePartial<T>
             );
           });
         } catch (e) {
           if (e instanceof RangeError) {
             throw new Error(
-              `Return value of ${currentKey} has a circular reference.\nConsider using Mock.from instead.`,
+              `Return value of ${currentKey} has a circular reference.\nConsider using Mock.from instead.`
             );
           }
           throw e;
         }
         return Object.assign(object as object, stubs as T);
-      },
+      }
     };
   }
 }

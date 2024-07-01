@@ -1,6 +1,6 @@
-import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
-import eslintConfigPrettier from "eslint-config-prettier";
+import pluginJs from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default [
   pluginJs.configs.recommended,
@@ -8,18 +8,19 @@ export default [
   eslintConfigPrettier,
   {
     ignores: [
-      "jest.config.ts",
-      "karma.conf.js",
-      "eslint.config.mjs",
-      "coverage",
-    ],
+      'jest.config.ts',
+      'karma.conf.js',
+      'eslint.config.mjs',
+      'coverage',
+      'dist'
+    ]
   },
   {
     languageOptions: {
       parserOptions: {
         project: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  },
+        tsconfigRootDir: import.meta.dirname
+      }
+    }
+  }
 ];

@@ -1,11 +1,6 @@
 import { SpyAdapterFactory } from './spy-adapter-factory';
 import { SpyAdapter } from './spy-adapters/spy-adapter';
-
-export type RecursivePartial<T> =
-  Partial<{ [key in keyof T]:
-              T[key] extends (...a: Array<infer U>) => any ? (...a: Array<U>) => RecursivePartial<ReturnType<T[key]>> | ReturnType<T[key]>: // tslint:disable-line
-              T[key] extends Array<any> ? Array<RecursivePartial<T[key][number]>> :
-              RecursivePartial<T[key]> | T[key] }>;
+import { RecursivePartial } from './recursive-partial';
 
 export interface ExtendedWith<T> {
   with(stubs: RecursivePartial<T>): T;
@@ -52,7 +47,7 @@ export class Mockery {
   }
 
   // tslint:disable-next-line:ban-types
-  public static staticMethod<T, K extends keyof T>(object: T, key: K, stub: T[K] & Function): void {
+  public static staticMethod<T, K extends keyof T>(object: T, key: K, stub: RecursivePartial<T>[K] & Function): void {
     this.spyAdapter.spyAndCallFake(object, key, stub);
   }
 

@@ -15,6 +15,9 @@ describe('Mockery', () => {
     static static(): string {
       throw new Error();
     }
+    static async staticPromise(): Promise<{ a: boolean; b: () => Promise<string>}> {
+      throw new Error();
+    }
     any: any;
     array: ObjectToNest[] = [];
     nestedObject!: ObjectToNest;
@@ -52,7 +55,8 @@ describe('Mockery', () => {
       const mock = Mockery.of<Foo>({ array: [{ stringFunction: () => 'string' }],
                                      booleanFunction: () => false,
                                      functionWithParam: () => 'hi',
-                                     stringFunction: () => 'hi' });
+                                     stringFunction: () => 'hi'
+                                   });
 
       expect(mock.stringFunction('whatevs')).toBe('hi');
       expect(mock.booleanFunction()).toBe(false);
@@ -71,7 +75,7 @@ describe('Mockery', () => {
     });
 
     it('works with no arguments', () => {
-      expect(() => Mockery.of<Foo>()).not.toThrow(); // tslint:disable-line:no-unnecessary-callback-wrapper
+      expect(() => Mockery.of<Foo>()).not.toThrow();
     });
 
     it('works with nested types', () => {
@@ -221,6 +225,14 @@ describe('Mockery', () => {
       Mockery.staticMethod(Foo, 'static', () => 'hi');
       Foo.static();
       expect(Foo.static).toHaveBeenCalled(); //tslint:disable-line:no-unbound-method
+    });
+
+    describe('with promise', () => {
+      it('is a spy', async () => {
+        Mockery.staticMethod(Foo, 'staticPromise', async () => ({ a: false, b: async () => '1' }));
+        await Foo.staticPromise();
+        expect(Foo.staticPromise).toHaveBeenCalled(); //tslint:disable-line:no-unbound-method
+      });
     });
 
     it('resets the call count', () => {

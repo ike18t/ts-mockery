@@ -5,6 +5,7 @@
     "comment-format": false,
     "completed-docs": false,
     "interface-name": false,
+    "interface-over-type-literal": false,
     "max-classes-per-file": [false],
     "member-access": false,
     "newline-before-return": false,

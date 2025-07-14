@@ -1,5 +1,7 @@
 import { Mockery } from './mockery';
 
+import * as ImportFixture from './test/importFixture';
+
 describe('Mockery', () => {
   interface AnotherObjectToNest {
     function: () => boolean;
@@ -277,6 +279,15 @@ describe('Mockery', () => {
       expect(() => {
         Foo.static();
       }).toThrow();
+    });
+
+    describe('imports', () => {
+      it('mocks module imports', () => {
+        Mockery.staticMethod(ImportFixture, 'foo', () => false);
+
+        expect(ImportFixture.foo()).toEqual(false);
+        expect(ImportFixture.foo).toHaveBeenCalled();
+      });
     });
   });
 

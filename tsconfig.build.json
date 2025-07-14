@@ -4,6 +4,7 @@
     "**/*.spec.ts",
     "jest-setup.ts",
     "jest.config.ts",
-    "karma-test-shim.ts"
+    "karma-test-shim.ts",
+    "lib/test"
   ]
 }

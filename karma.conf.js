@@ -11,7 +11,6 @@ module.exports = (config) => {
     logLevel: config.LOG_INFO,
     port: 9876,
     preprocessors: {
-      'lib/**/!(*spec).ts': ['coverage'],
       '**/*.ts': ['karma-typescript'] // tslint:disable-line:object-literal-sort-keys
     },
     reporters: ['dots', 'karma-typescript', 'kjhtml', 'coverage'],
@@ -19,7 +18,10 @@ module.exports = (config) => {
 
     karmaTypescriptConfig: {
       include: ['karma-test-shim.ts'],
-      tsconfig: './tsconfig.json'
+      tsconfig: './tsconfig.json',
+      coverageOptions: {
+        exclude: [/\.(d|spec|test)\.ts$/i]
+      }
     },
 
     coverageReporter: {

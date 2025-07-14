@@ -2,13 +2,17 @@ import { SpyAdapterFactory } from './spy-adapter-factory';
 import { SpyAdapter } from './spy-adapters/spy-adapter';
 
 export type RecursivePartial<T> = Partial<{
-  [key in keyof T]: T[key] extends (...a: Array<infer U>) => unknown
-    ? (
-        ...a: Array<U>
-      ) => RecursivePartial<ReturnType<T[key]>> | ReturnType<T[key]>
-    : T[key] extends Array<unknown>
-      ? Array<RecursivePartial<T[key][number]>>
-      : RecursivePartial<T[key]> | T[key];
+  [key in keyof T]: T[key] extends Promise<infer P>
+    ? Promise<RecursivePartial<P>>
+    : T[key] extends (...a: Array<infer U>) => infer R
+      ? R extends Promise<infer P>
+        ? (...a: Array<U>) => Promise<RecursivePartial<P>>
+        : (...a: Array<U>) => RecursivePartial<R>
+      : T[key] extends Array<unknown>
+        ? Array<RecursivePartial<T[key][number]>>
+        : T[key] extends string | number | boolean | null | undefined
+          ? T[key]
+          : RecursivePartial<T[key]>;
 }>;
 
 export interface ExtendedWith<T> {

@@ -62,6 +62,16 @@ interface ComplexNested {
   };
 }
 
+interface WithPromises {
+  getData(): Promise<{ id: number; name: string }>;
+  processData(data: string): Promise<void>;
+  asyncProperty: Promise<boolean>;
+  nestedPromise: {
+    fetchUser(): Promise<{ email: string; profile: { avatar: string } }>;
+    saveUser(user: { id: number }): Promise<{ success: boolean }>;
+  };
+}
+
 describe('RecursivePartial - Simple Objects', () => {
   it('allows partial assignment of simple properties', () => {
     expectTypeOf<Record<string, never>>().toExtend<
@@ -269,23 +279,26 @@ describe('RecursivePartial - Optional Fields', () => {
 
 describe('RecursivePartial - Complex Nested', () => {
   it('handles deeply nested structures with methods', () => {
-    expectTypeOf<{
+    // Test that deeply nested structures compile correctly with Promise transformations
+    const partial: RecursivePartial<ComplexNested> = {
       service: {
         api: {
-          get: (path: string) => Promise<unknown>;
-        };
-      };
-    }>().toExtend<RecursivePartial<ComplexNested>>();
-    expectTypeOf<{
-      service: {
+          get: (_path: string) => Promise.resolve({}),
+          post: (_path: string, _data: unknown) => Promise.resolve({})
+        },
         cache: {
-          get: (_key: string) => string;
-        };
-      };
+          get: (_key) => 'cached',
+          set: (_key, _value) => {}
+        }
+      },
       config: {
-        endpoints: string[];
-      };
-    }>().toExtend<RecursivePartial<ComplexNested>>();
+        endpoints: ['api/v1'],
+        timeout: 5000
+      }
+    };
+
+    expect(partial.service).toBeDefined();
+    expect(partial.config).toBeDefined();
     typeTest();
   });
 
@@ -302,6 +315,119 @@ describe('RecursivePartial - Complex Nested', () => {
     if (partial.service) {
       expectTypeOf(partial.service.api).not.toBeUndefined();
     }
+  });
+});
+
+describe('RecursivePartial - Promises', () => {
+  it('supports basic Promise properties with RecursivePartial resolved values', () => {
+    // Promise<T> becomes Promise<RecursivePartial<T>>
+    expectTypeOf<{
+      asyncProperty: Promise<boolean>;
+    }>().toExtend<RecursivePartial<WithPromises>>();
+    typeTest();
+  });
+
+  it('supports Promise-returning methods with RecursivePartial resolved values', () => {
+    // Methods returning Promise<T> become (...args) => Promise<RecursivePartial<T>>
+    expectTypeOf<{
+      getData: () => Promise<{ id: number; name: string }>;
+    }>().toExtend<RecursivePartial<WithPromises>>();
+    expectTypeOf<{
+      getData: () => Promise<{ id: number }>;
+    }>().toExtend<RecursivePartial<WithPromises>>();
+    expectTypeOf<{
+      getData: () => Promise<{ name: string }>;
+    }>().toExtend<RecursivePartial<WithPromises>>();
+    expectTypeOf<{
+      getData: () => Promise<Record<string, never>>;
+    }>().toExtend<RecursivePartial<WithPromises>>();
+    expectTypeOf<{
+      processData: (data: string) => Promise<void>;
+    }>().toExtend<RecursivePartial<WithPromises>>();
+    typeTest();
+  });
+
+  it('supports nested Promise structures with RecursivePartial resolved values', () => {
+    expectTypeOf<{
+      nestedPromise: {
+        fetchUser: () => Promise<{
+          email: string;
+          profile: { avatar: string };
+        }>;
+      };
+    }>().toExtend<RecursivePartial<WithPromises>>();
+    expectTypeOf<{
+      nestedPromise: {
+        fetchUser: () => Promise<{ email: string }>;
+      };
+    }>().toExtend<RecursivePartial<WithPromises>>();
+    expectTypeOf<{
+      nestedPromise: {
+        fetchUser: () => Promise<{ profile: { avatar: string } }>;
+      };
+    }>().toExtend<RecursivePartial<WithPromises>>();
+    expectTypeOf<{
+      nestedPromise: {
+        saveUser: (user: { id: number }) => Promise<{ success: boolean }>;
+      };
+    }>().toExtend<RecursivePartial<WithPromises>>();
+    expectTypeOf<{
+      nestedPromise: {
+        saveUser: (user: { id: number }) => Promise<Record<string, never>>;
+      };
+    }>().toExtend<RecursivePartial<WithPromises>>();
+    typeTest();
+  });
+
+  it('maintains correct Promise type signatures with RecursivePartial', () => {
+    const partial: RecursivePartial<WithPromises> = {
+      getData: () => Promise.resolve({ id: 1, name: 'test' }),
+      asyncProperty: Promise.resolve(true),
+      nestedPromise: {
+        fetchUser: () =>
+          Promise.resolve({
+            email: 'test@example.com',
+            profile: { avatar: 'avatar.jpg' }
+          }),
+        saveUser: (_user: { id: number }) => Promise.resolve({ success: true })
+      }
+    };
+
+    // Verify the Promise types are correctly typed with RecursivePartial
+    expectTypeOf(partial.asyncProperty).toExtend<
+      Promise<boolean> | undefined
+    >();
+    expectTypeOf(partial.getData).toExtend<
+      (() => Promise<{ id?: number; name?: string }>) | undefined
+    >();
+    typeTest();
+  });
+
+  it('verifies Promise type safety with partial resolved values', () => {
+    // Test that Promise types work correctly with partial resolved values
+    const partialWithPromises: RecursivePartial<WithPromises> = {
+      getData: () => Promise.resolve({ id: 1 }), // name is optional
+      asyncProperty: Promise.resolve(true)
+    };
+
+    expect(partialWithPromises.getData).toBeDefined();
+    expect(partialWithPromises.asyncProperty).toBeDefined();
+    typeTest();
+  });
+
+  it('applies RecursivePartial to Promise resolved values', () => {
+    // Test that Promise<T> becomes Promise<RecursivePartial<T>>
+    const partial: RecursivePartial<WithPromises> = {
+      getData: () => Promise.resolve({ id: 1 }), // name is optional due to RecursivePartial
+      nestedPromise: {
+        fetchUser: () => Promise.resolve({ email: 'test@example.com' }), // profile is optional
+        saveUser: (_user: { id: number }) => Promise.resolve({}) // success is optional
+      }
+    };
+
+    expect(partial.getData).toBeDefined();
+    expect(partial.nestedPromise).toBeDefined();
+    typeTest();
   });
 });
 

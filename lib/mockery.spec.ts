@@ -17,6 +17,10 @@ describe('Mockery', () => {
     static static(): string {
       throw new Error();
     }
+
+    static getUser(): { id: number; name: string; email: string } {
+      throw new Error();
+    }
     any: any; // eslint-disable-line @typescript-eslint/no-explicit-any
     array: ObjectToNest[] = [];
     nestedObject!: ObjectToNest;
@@ -279,6 +283,31 @@ describe('Mockery', () => {
       expect(() => {
         Foo.static();
       }).toThrow();
+    });
+
+    it('supports RecursivePartial for object return types', () => {
+      // Can return partial objects
+      Mockery.staticMethod(Foo, 'getUser', () => ({ id: 1, name: 'John' })); // email is optional
+
+      const user = Foo.getUser();
+      expect(user.id).toBe(1);
+      expect(user.name).toBe('John');
+      expect(user.email).toBeUndefined();
+      expect(Foo.getUser).toHaveBeenCalled(); // eslint-disable-line @typescript-eslint/unbound-method
+    });
+
+    it('supports full objects for object return types', () => {
+      // Can also return full objects
+      Mockery.staticMethod(Foo, 'getUser', () => ({
+        id: 1,
+        name: 'John',
+        email: 'john@example.com'
+      }));
+
+      const user = Foo.getUser();
+      expect(user.id).toBe(1);
+      expect(user.name).toBe('John');
+      expect(user.email).toBe('john@example.com');
     });
 
     describe('imports', () => {

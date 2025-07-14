@@ -70,9 +70,11 @@ export class Mockery {
   public static staticMethod<T, K extends keyof T>(
     object: T,
     key: K,
-    stub: T[K] & (() => unknown)
+    stub: T[K] extends (...args: infer A) => infer R
+      ? (...args: A) => R extends object ? RecursivePartial<R> | R : R
+      : T[K]
   ): void {
-    this.spyAdapter.spyAndCallFake(object, key, stub);
+    this.spyAdapter.spyAndCallFake(object, key, stub as T[K] & (() => unknown));
   }
 
   private static spyAdapter: SpyAdapter = SpyAdapterFactory.get('noop');

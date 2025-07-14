@@ -42,6 +42,7 @@
     "@types/node": "^20.12.12",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
+    "expect-type": "^1.2.2",
     "istanbul": "^0.4.5",
     "jasmine-ts": "^0.4.0",
     "karma": "^6.4.3",

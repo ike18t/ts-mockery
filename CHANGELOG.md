@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/ike18t/ts-mockery/compare/v1.2.0...v2.0.0) (2025-07-14)
+
+
+### Bug Fixes
+
+* karma coverage issue ([718d8f6](https://github.com/ike18t/ts-mockery/commit/718d8f6))
+* **all:** proxy doesn't stub then fn ([20c328d](https://github.com/ike18t/ts-mockery/commit/20c328d))
+
+
+### Features
+
+* add module import mocking support ([f7958de](https://github.com/ike18t/ts-mockery/commit/f7958de))
+* add Promise support to RecursivePartial type ([cce8e50](https://github.com/ike18t/ts-mockery/commit/cce8e50))
+* enhance staticMethod to support RecursivePartial return types ([56bf096](https://github.com/ike18t/ts-mockery/commit/56bf096))
+
+
+
 <a name="1.2.0"></a>
 # 1.2.0 (2019-08-28)
 

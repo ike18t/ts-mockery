@@ -507,20 +507,6 @@ const builderMock = Mock.of<FluentBuilder>({
 
 ### Common Issues
 
-**TypeScript Errors with Deep Nesting**
-
-```typescript
-// ❌ May cause complex type errors
-const deepMock = Mock.of<VeryComplexNestedType>({
-  /* complex object */
-});
-
-// ✅ Use type assertion for complex cases
-const deepMock = Mock.of<VeryComplexNestedType>({
-  /* simpler object */
-} as any);
-```
-
 **Circular Reference Errors**
 
 ```typescript
@@ -552,11 +538,6 @@ const mock = Mock.of<ApiService>({
 });
 ```
 
-### Performance Considerations
-
-- Use `Mock.all()` for large interfaces where you only need a few methods
-- Prefer `Mock.of()` over `Mock.from()` when possible (better performance)
-- Consider using `Mock.noop` for methods you don't need to test
 
 ## Contributing
 

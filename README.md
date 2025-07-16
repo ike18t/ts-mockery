@@ -1,7 +1,7 @@
 # ts-mockery
 
 [![npm version](https://badge.fury.io/js/ts-mockery.svg)](https://badge.fury.io/js/ts-mockery)
-[![Build Status](https://travis-ci.org/ike18t/ts-mockery.png?branch=master)](https://travis-ci.org/ike18t/ts-mockery)
+[![Node.js CI](https://github.com/ike18t/ts-mockery/actions/workflows/test.yml/badge.svg)](https://github.com/ike18t/ts-mockery/actions/workflows/test.yml)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/7a40cfa333b296dee4a2/test_coverage)](https://codeclimate.com/github/ike18t/ts-mockery/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/7a40cfa333b296dee4a2/maintainability)](https://codeclimate.com/github/ike18t/ts-mockery/maintainability)
 
@@ -187,9 +187,7 @@ ts-mockery provides full Promise support with type-safe partial resolved values:
 
 ```typescript
 interface ApiService {
-  fetchUser(
-    id: number
-  ): Promise<{
+  fetchUser(id: number): Promise<{
     id: number;
     name: string;
     email: string;
@@ -538,7 +536,6 @@ const mock = Mock.of<ApiService>({
 });
 ```
 
-
 ## Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
@@ -565,4 +562,3 @@ npm test             # Run all tests
 **Made with ❤️ by the TypeScript community**
 
 For more examples and advanced usage, visit our [StackBlitz Examples](https://stackblitz.com/edit/ts-mockery-examples?file=tests.ts).
-

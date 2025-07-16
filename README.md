@@ -1,6 +1,6 @@
 # ts-mockery
 
-[![npm version](https://badge.fury.io/js/ts-mockery.svg)](https://badge.fury.io/js/ts-mockery)
+![NPM Version](https://img.shields.io/npm/v/ts-mockery?color=brightgreen)
 [![Node.js CI](https://github.com/ike18t/ts-mockery/actions/workflows/test.yml/badge.svg)](https://github.com/ike18t/ts-mockery/actions/workflows/test.yml)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/7a40cfa333b296dee4a2/test_coverage)](https://codeclimate.com/github/ike18t/ts-mockery/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/7a40cfa333b296dee4a2/maintainability)](https://codeclimate.com/github/ike18t/ts-mockery/maintainability)
